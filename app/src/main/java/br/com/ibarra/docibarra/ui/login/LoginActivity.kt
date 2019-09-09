@@ -1,19 +1,20 @@
 package br.com.ibarra.docibarra.ui.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import br.com.ibarra.docibarra.R
 import br.com.ibarra.docibarra.databinding.ActivityLoginBinding
 import br.com.ibarra.docibarra.ui.doctor.DoctorListActivity
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -30,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -44,35 +44,48 @@ class LoginActivity : AppCompatActivity() {
                password.error = getString(loginState.passwordError)
             }
 
+            showLoading()
+
             loginViewModel.login()
+            hideSoftKeyboard()
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
-
             if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
+                updateUiWithUser()
                 val intent = Intent(this@LoginActivity, DoctorListActivity::class.java)
                 startActivity(intent)
             } else if(loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+                showLoginFailed()
             }
+
+            hideLoading()
+
         })
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+    private fun showLoading() {
+        loading_container.visibility = View.VISIBLE
+        login.visibility = View.GONE
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun hideLoading() {
+        loading_container.visibility = View.GONE
+        login.visibility = View.VISIBLE
+    }
+
+    private fun updateUiWithUser() {
+        Snackbar.make(container, R.string.welcome, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showLoginFailed() {
+        Snackbar.make(container, R.string.login_failed, Snackbar.LENGTH_LONG).show()
+    }
+
+    fun hideSoftKeyboard() {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 }
