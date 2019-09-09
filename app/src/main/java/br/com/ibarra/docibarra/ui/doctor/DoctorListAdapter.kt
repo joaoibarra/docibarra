@@ -7,13 +7,9 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.ibarra.docibarra.R
-import br.com.ibarra.docibarra.data.model.AuthUser
 import br.com.ibarra.docibarra.data.model.Doctor
 import br.com.ibarra.docibarra.di.GlideManager
-import br.com.ibarra.docibarra.ui.extensions.loadCircle
 import kotlinx.android.synthetic.main.view_doctor_list_item.view.*
-import org.koin.core.qualifier.named
-import org.koin.dsl.koinApplication
 
 class DoctorListAdapter(private val glideManager: GlideManager) : PagedListAdapter<Doctor, DoctorListAdapter.DoctorHolder>(itemDiff) {
 

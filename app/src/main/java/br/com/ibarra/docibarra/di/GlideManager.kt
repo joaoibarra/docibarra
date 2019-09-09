@@ -13,13 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import org.koin.dsl.koinApplication
 
 class GlideManager(private var context: Context, private val authorization: String) {
-//    private var url: String = ""
     private var doctorId: String = ""
-
-//    fun setUrl(url: String) : GlideManager {
-//        this.url = url
-//        return this
-//    }
 
     fun setDoctorId(doctorId: String) : GlideManager {
         this.doctorId = doctorId
@@ -47,7 +41,6 @@ class GlideManager(private var context: Context, private val authorization: Stri
     }
 
     private fun setDefaultImage(imageview: ImageView) {
-//        imageview.setImageResource(R.drawable.ic_doctors_bag)
         Glide.with(context)
                 .asDrawable()
                 .transform(CircleCrop())

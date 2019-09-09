@@ -2,7 +2,6 @@ package br.com.ibarra.docibarra.ui.login
 
 import android.util.Patterns
 import android.view.View
-import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -26,8 +26,6 @@ class LoginActivity : AppCompatActivity() {
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this@LoginActivity, R.layout.activity_login)
         binding.viewmodel = loginViewModel
-        binding.lifecycleOwner = this
-
 
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
@@ -37,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
@@ -68,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",

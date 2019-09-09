@@ -51,7 +51,7 @@ class DoctorListActivity: AppCompatActivity() {
 
         val binding: ActivityDoctorListBinding = DataBindingUtil.setContentView(this@DoctorListActivity, R.layout.activity_doctor_list)
         binding.viewModel = doctorListViewModel
-        binding.lifecycleOwner = this
+        //binding.lifecycleOwner = this
 
 
 
