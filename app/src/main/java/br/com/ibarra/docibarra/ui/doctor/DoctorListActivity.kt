@@ -58,7 +58,6 @@ class DoctorListActivity: AppCompatActivity() {
         return doctorListViewModel.doctors?.observeOn(AndroidSchedulers.mainThread())?.subscribe(
                         { list ->
                             doctorListViewModel.getAdapter().submitList(list)
-//                            hideProgressBar()
                         },
                         { e ->
                             Log.e("Error OnLoad", "Error", e)
@@ -125,15 +124,4 @@ class DoctorListActivity: AppCompatActivity() {
         }
 
     }
-
-//    fun showProgressBar() {
-////        progressbar.visibility = View.VISIBLE
-//        shimmer_layout.startShimmer()
-//    }
-//
-//    fun hideProgressBar() {
-////        progressbar.visibility = View.
-//        shimmer_layout.stopShimmer()
-//
-//    }
 }
