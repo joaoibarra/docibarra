@@ -1,6 +1,5 @@
 package br.com.ibarra.docibarra.di
 
-import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import br.com.ibarra.docibarra.BuildConfig
@@ -31,6 +30,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+private const val CONNECT_TIMEOUT = 15L
+private const val WRITE_TIMEOUT = 15L
+private const val READ_TIMEOUT = 15L
+
 val LoginModule = module {
     single<Retrofit>(named("loginService")) {
         Retrofit.Builder()
@@ -46,11 +49,7 @@ val LoginModule = module {
     viewModel { LoginViewModel(get()) }
 }
 
-private const val CONNECT_TIMEOUT = 15L
-private const val WRITE_TIMEOUT = 15L
-private const val READ_TIMEOUT = 15L
-
-val DocSearchModule = module {
+val DocSearchNetworkModule = module {
     single { Cache(androidApplication().cacheDir, 10L * 1024 * 1024) }
 
     single { GsonBuilder().create() }
@@ -87,6 +86,9 @@ val DocSearchModule = module {
     }
 
     factory { DoctorListAdapter(get(named("glideManager"))) }
+}
+
+val DocSearchModule = module {
 
     single<Retrofit>(named("mainService")) {
         Retrofit.Builder()
@@ -122,4 +124,4 @@ val DocSearchModule = module {
 
 }
 
-val docIbarraModule = listOf(LoginModule, DocSearchModule)
+val docIbarraModule = listOf(LoginModule, DocSearchNetworkModule, DocSearchModule)
