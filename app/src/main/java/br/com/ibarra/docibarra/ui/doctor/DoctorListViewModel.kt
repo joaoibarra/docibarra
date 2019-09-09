@@ -12,28 +12,24 @@ class DoctorListViewModel(private val doctorListDataSourceFactory: DoctorListDat
 
     var doctors: Observable<PagedList<Doctor>>? = null
 
+    var searchText : String = ""
     var latitude: Double = 52.534709
-        get
     var longitude : Double = 13.3976972
-        get
 
     companion object{
         const val PAGESIZE = 20
     }
 
     fun initDoctorsList() {
-        doctorListDataSourceFactory.setQuerySearch("", latitude, longitude)
+        doctors = null
+        adapter.submitList(null)
+        doctorListDataSourceFactory.invalidateDataSource()
+        doctorListDataSourceFactory.setQuerySearch(searchText, latitude, longitude)
         doctors = loadData()
     }
 
     fun loadData(): Observable<PagedList<Doctor>>  {
         return pagedList
-    }
-
-    fun doSearch(searchText: String) {
-        doctorListDataSourceFactory.doctorListDataSource.invalidate()
-        doctorListDataSourceFactory.setQuerySearch(searchText, latitude, longitude)
-        doctors = loadData()
     }
 
     fun getAdapter(): DoctorListAdapter{

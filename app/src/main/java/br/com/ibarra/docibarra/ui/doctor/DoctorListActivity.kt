@@ -50,8 +50,8 @@ class DoctorListActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        checkUserPermission()
         handleIntent(intent)
+        checkUserPermission()
     }
 
     fun setListData(): Disposable? {
@@ -82,11 +82,8 @@ class DoctorListActivity: AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-
         if (Intent.ACTION_SEARCH == intent.action) {
-            val query = intent.getStringExtra(SearchManager.QUERY)
-            doctorListViewModel.doSearch(query)
-            doctorListViewModel.getAdapter().submitList(null)
+            doctorListViewModel.searchText = intent.getStringExtra(SearchManager.QUERY)
         }
     }
 

@@ -28,4 +28,10 @@ class DoctorListDataSourceFactory(
         }
     }
 
+    fun invalidateDataSource() {
+        if(::doctorListDataSource.isInitialized){
+            doctorListDataSource.invalidate()
+        }
+    }
+
 }
