@@ -8,7 +8,6 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -23,9 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_doctor_list.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.jar.Manifest
 
 class DoctorListActivity: AppCompatActivity() {
     private val disposable = CompositeDisposable()
@@ -38,23 +35,14 @@ class DoctorListActivity: AppCompatActivity() {
         const val ACCESS_LOCATION_PERMISSION = 27
     }
 
-    //private val adapter by inject<DoctorListAdapter>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctor_list)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        handleIntent(intent)
-
-
         val binding: ActivityDoctorListBinding = DataBindingUtil.setContentView(this@DoctorListActivity, R.layout.activity_doctor_list)
         binding.viewModel = doctorListViewModel
-        //binding.lifecycleOwner = this
-
-
-
         rv_doctors.layoutManager = LinearLayoutManager(this)
         rv_doctors.adapter = doctorListViewModel.getAdapter()
 
@@ -63,6 +51,7 @@ class DoctorListActivity: AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         checkUserPermission()
+        handleIntent(intent)
     }
 
     fun setListData(): Disposable? {

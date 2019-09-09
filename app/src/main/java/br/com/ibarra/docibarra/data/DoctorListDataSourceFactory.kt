@@ -7,7 +7,7 @@ import br.com.ibarra.docibarra.data.remote.DocIbarraApi
 import io.reactivex.disposables.CompositeDisposable
 
 class DoctorListDataSourceFactory(
-        private val compositeDisposable: CompositeDisposable,
+        val compositeDisposable: CompositeDisposable,
         private val docIbarraApi: DocIbarraApi
 ) : DataSource.Factory<String, Doctor>() {
     lateinit var doctorListDataSource: DataSource<String, Doctor>
@@ -20,6 +20,12 @@ class DoctorListDataSourceFactory(
 
     fun setQuerySearch(searchText: String, latitude: Double, longitude: Double) {
         searchDoctorQuery = SearchDoctorQuery(searchText, latitude, longitude)
+    }
+
+    fun onCleared() {
+        if (!compositeDisposable.isDisposed) {
+            compositeDisposable.dispose()
+        }
     }
 
 }
